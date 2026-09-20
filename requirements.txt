@@ -8,3 +8,4 @@ pandas
 django-cors-headers
 dj-database-url 
 python-dotenv
+whitenoise  
