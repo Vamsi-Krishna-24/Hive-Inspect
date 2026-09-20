@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
 
-from .models import Template, Comment
+from .models import Template, Comment, Section, Item
 from .forms import TemplateImportForm
 from .services.spectora_import import import_spectora_export
 
@@ -106,6 +106,36 @@ def copy_template(request, template_id):
                     _clone(comment, item=new_item)
         messages.success(request, f'Duplicated as "{copy.name}".')
     return redirect("templates_app:list")
+
+
+def delete_template(request, template_id):
+    template = get_object_or_404(Template, id=template_id)
+    if request.method == "POST":
+        name = template.name
+        template.delete()
+        messages.success(request, f'Deleted "{name}".')
+    return redirect("templates_app:list")
+
+
+def save_section(request, section_id):
+    section = get_object_or_404(Section, id=section_id)
+    if request.method == "POST":
+        section.name = request.POST.get("name", section.name)
+        section.save()
+        messages.success(request, "Saved.")
+    base_url = reverse("templates_app:editor", args=[section.template.id])
+    return redirect(f"{base_url}?section={section.id}")
+
+
+def save_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    if request.method == "POST":
+        item.name = request.POST.get("name", item.name)
+        item.save()
+        messages.success(request, "Saved.")
+    section = item.section
+    base_url = reverse("templates_app:editor", args=[section.template.id])
+    return redirect(f"{base_url}?section={section.id}&item={item.id}")
 
 
 def _clone(instance, **override_fk):
