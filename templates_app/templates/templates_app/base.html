@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Templates{% endblock %} — Hive Inspect</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            DEFAULT: '#2563eb',
+            dark: '#1d4ed8',
+          }
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+<div class="flex h-screen overflow-hidden">
+
+  <!-- Sidebar -->
+  <aside class="w-56 shrink-0 bg-white border-r border-slate-200 flex flex-col">
+    <div class="h-16 flex items-center gap-2 px-5 border-b border-slate-200">
+      <div class="w-7 h-7 rounded bg-brand text-white flex items-center justify-center text-xs font-bold">D</div>
+      <span class="font-semibold text-slate-900">DT</span>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto py-3 text-sm">
+      <a href="#" class="flex items-center gap-3 px-5 py-2.5 text-slate-500 hover:bg-slate-50">
+        <span>📋</span> Inspections
+      </a>
+      <a href="{% url 'templates_app:list' %}"
+         class="flex items-center gap-3 px-5 py-2.5 font-medium border-l-2
+                {% if active == 'templates' %} border-brand text-brand bg-blue-50 {% else %} border-transparent text-slate-500 hover:bg-slate-50 {% endif %}">
+        <span>📄</span> Templates
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <header class="h-16 shrink-0 bg-white border-b border-slate-200 flex items-center px-6 gap-4">
+      <div class="flex-1 max-w-xl">
+        <input type="text" placeholder="Search entire template..."
+               class="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-2 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand/30" />
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto">
+      {% if messages %}
+        <div class="px-6 pt-4 space-y-2">
+        {% for message in messages %}
+          <div class="rounded-lg px-4 py-2 text-sm {% if message.tags == 'error' %}bg-red-50 text-red-700{% else %}bg-green-50 text-green-700{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+</body>
+</html>

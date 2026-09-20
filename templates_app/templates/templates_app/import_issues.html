@@ -1,0 +1,27 @@
+{% extends "templates_app/base.html" %}
+{% block title %}Import Issues — {{ template.name }}{% endblock %}
+
+{% block content %}
+<div class="px-8 py-6 max-w-3xl">
+  <a href="{% url 'templates_app:editor' template.id %}" class="text-sm text-slate-500 hover:text-brand">← Back to {{ template.name }}</a>
+  <h1 class="text-2xl font-semibold text-slate-900 mt-2">Import Issues</h1>
+  <p class="text-sm text-slate-500 mt-1">Everything flagged while importing "{{ template.name }}" — nothing was dropped silently.</p>
+
+  <div class="mt-6 bg-white border border-slate-200 rounded-xl divide-y divide-slate-100">
+    {% for issue in issues %}
+    <div class="flex gap-3 px-5 py-3 text-sm">
+      <span class="shrink-0 text-[10px] uppercase font-semibold tracking-wide mt-0.5 w-14
+                    {% if issue.severity == 'error' %}text-red-600{% elif issue.severity == 'warning' %}text-amber-600{% else %}text-blue-600{% endif %}">
+        {{ issue.severity }}
+      </span>
+      <span class="text-slate-700">
+        {% if issue.row_number %}<span class="text-slate-400">Row {{ issue.row_number }}{% if issue.column_name %} · {{ issue.column_name }}{% endif %} —</span>{% endif %}
+        {{ issue.message }}
+      </span>
+    </div>
+    {% empty %}
+    <p class="px-5 py-6 text-sm text-slate-400">No issues recorded for this import.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
