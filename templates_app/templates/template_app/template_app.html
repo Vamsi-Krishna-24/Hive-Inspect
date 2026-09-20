@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template Editor – HiveInspect</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:  '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* subtle scrollbar for the template list */
+    .template-list::-webkit-scrollbar { width: 6px; }
+    .template-list::-webkit-scrollbar-track { background: transparent; }
+    .template-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+  </style>
+</head>
+<body class="bg-slate-50 h-screen overflow-hidden font-sans antialiased">
+
+  <!-- ========== APP SHELL ========== -->
+  <div class="flex h-full">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="w-56 bg-white border-r border-slate-200 flex flex-col shrink-0">
+      <!-- Logo / Company -->
+      <div class="flex items-center gap-2.5 px-4 py-4 border-b border-slate-100">
+        <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold text-sm">
+          D
+        </div>
+        <span class="font-semibold text-slate-800 text-sm">DT</span>
+      </div>
+
+      <!-- Nav -->
+      <nav class="flex-1 px-3 py-4 space-y-1">
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 text-sm font-medium">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+          Inspections
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-brand-50 text-brand-700 text-sm font-medium">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+          </svg>
+          Templates
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 flex flex-col min-w-0">
+
+      <!-- Top search bar -->
+      <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center">
+        <div class="relative w-full max-w-xl">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input type="text"
+                 placeholder="Search entire template..."
+                 class="w-full pl-10 pr-4 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-slate-50"/>
+        </div>
+      </header>
+
+      <!-- Page header + action buttons -->
+      <div class="bg-white px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+        <h1 class="text-xl font-bold text-slate-900">Template Editor</h1>
+
+        <div class="flex items-center gap-2">
+          <!-- Upload -->
+          <button class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+            </svg>
+            Upload
+          </button>
+
+          <!-- Template Hub -->
+          <button class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-brand-100 hover:bg-brand-200 text-brand-700 text-sm font-medium rounded-lg transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+            Template Hub
+          </button>
+
+          <!-- Create -->
+          <button class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 text-sm font-medium rounded-lg border border-slate-200 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Create
+          </button>
+        </div>
+      </div>
+
+      <!-- TWO-PANE BODY -->
+      <div class="flex-1 flex overflow-hidden">
+
+        <!-- LEFT: Template list -->
+        <div class="w-80 border-r border-slate-200 bg-white flex flex-col">
+          <div class="template-list flex-1 overflow-y-auto p-3 space-y-2">
+
+            <!-- Template row 1 -->
+            <div class="group flex items-center gap-2 px-3 py-2.5 rounded-lg border border-slate-200 hover:border-brand-300 hover:bg-brand-50 cursor-pointer transition">
+              <!-- drag handle -->
+              <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M7 2a2 2 0 10.001 4.001A2 2 0 007 2zm0 6a2 2 0 10.001 4.001A2 2 0 007 8zm0 6a2 2 0 10.001 4.001A2 2 0 007 14zm6-8a2 2 0 10.001 4.001A2 2 0 0013 6zm0 6a2 2 0 10.001 4.001A2 2 0 0013 12z"/>
+              </svg>
+
+              <span class="flex-1 text-sm font-medium text-slate-800 truncate">
+                InterNACHI Residential<br>
+                <span class="text-xs text-slate-500 font-normal">-2026-09-20</span>
+              </span>
+
+              <!-- 3-dot menu -->
+              <button class="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-slate-200 transition">
+                <svg class="w-4 h-4 text-slate-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Template row 2 -->
+            <div class="group flex items-center gap-2 px-3 py-2.5 rounded-lg border border-slate-200 hover:border-brand-300 hover:bg-brand-50 cursor-pointer transition">
+              <svg class="w-4 h-4 text-slate-300 group-hover:text-slate-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M7 2a2 2 0 10.001 4.001A2 2 0 007 2zm0 6a2 2 0 10.001 4.001A2 2 0 007 8zm0 6a2 2 0 10.001 4.001A2 2 0 007 14zm6-8a2 2 0 10.001 4.001A2 2 0 0013 6zm0 6a2 2 0 10.001 4.001A2 2 0 0013 12z"/>
+              </svg>
+
+              <span class="flex-1 text-sm font-medium text-slate-800 truncate">
+                Demo Residential Template
+              </span>
+
+              <button class="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-slate-200 transition">
+                <svg class="w-4 h-4 text-slate-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                </svg>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT: Empty state -->
+        <div class="flex-1 flex items-center justify-center bg-slate-50">
+          <div class="text-center max-w-sm px-6">
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">No Template Selected</h2>
+            <p class="text-slate-500 text-sm leading-relaxed">
+              Select a template from the sidebar to start editing<br>
+              <span class="text-slate-400">Or use the buttons above to create or import templates</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>
